@@ -6,6 +6,7 @@ using CheeseMVC.Data;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace CheeseMVC.Controllers
 {
     public class CheeseController : Controller
@@ -37,7 +38,9 @@ namespace CheeseMVC.Controllers
             if (ModelState.IsValid)
             {
                 // Add the new cheese to my existing cheeses
-                CheeseCategory = newCheeseCategory = context.Categories.Single(c => c.ID == addCheeseViewModel.CategoryID);
+                CheeseCategory newCheeseCategory =
+                    context.Categories.Single(c => c.ID == addCheeseViewModel.CategoryID);
+
                 Cheese newCheese = new Cheese
                 {
                     Name = addCheeseViewModel.Name,
@@ -73,6 +76,22 @@ namespace CheeseMVC.Controllers
             context.SaveChanges();
 
             return Redirect("/");
+        }
+
+        public IActionResult Category(int id)
+        {
+            if (id == 0)
+            {
+                return Redirect("/Category");
+            }
+
+            CheeseCategory theCategory = context.Categories
+                .Include(cat => cat.Cheeses)
+                .Single(cat => cat.ID == id);
+
+            ViewBag.title = "Cheeses in category: " + theCategory.Name;
+
+            return View("Index", theCategory.Cheeses);
         }
     }
 }

@@ -7,9 +7,14 @@ namespace CheeseMVC.Models
 {
     public class CheeseCategory
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public IList<Cheese> Cheeses { get; set; }
+        //public name (string)
+        //public id
+
+            public int ID { get; set; }
+            public string Name { get; set; }
+            
+
+            public IList<Cheese> Cheeses { get; set; }
+     
     }
 }
-
